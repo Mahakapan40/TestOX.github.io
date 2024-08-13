@@ -23,6 +23,7 @@ const checkWinner = (player) => {
 const handleClick = (e) => {
     const cell = e.target;
 
+    // ตรวจสอบว่าเซลล์ถูกคลิกแล้วหรือไม่ หรือเกมจบแล้ว
     if (cell.classList.contains('x') || cell.classList.contains('o') || checkWinner('x') || checkWinner('o')) return;
 
     cell.classList.add(isXTurn ? 'x' : 'o');
