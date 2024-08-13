@@ -18,6 +18,50 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 3em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.cell:hover {
+    background-color: #f9f9f9;
+}
+
+.cell.x {
+    color: #007bff; /* สีของ X */
+}
+
+.cell.o {
+    color: #28a745; /* สีของ O */
+}
+
+#status {
+    font-size: 1.2em;
+}
+
+button {
+    font-size: 1em;
+}
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+#game-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.cell {
+    width: 100%;
+    height: 100px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 2em;
     cursor: pointer;
 }
