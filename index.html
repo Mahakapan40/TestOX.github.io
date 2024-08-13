@@ -21,7 +21,7 @@
         async function fetchTables() {
             try {
                 // Fetch table names from the Supabase metadata
-                const { data, error } = await supabase.rpc('get_table_names'); // Ensure this function exists in your Supabase instance
+                const { data, error } = await supabase.rpc('Test'); // Ensure this function exists in your Supabase instance
 
                 if (error) {
                     throw error;
