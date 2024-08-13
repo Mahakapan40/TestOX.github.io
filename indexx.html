@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supabase and HTML Example</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+</head>
+<body>
+    <h1>Supabase Real-Time Example</h1>
+    <div id="status"></div>
+    <ul id="data-list"></ul>
+
+    <script>
+        // Initialize Supabase
+        const supabaseUrl = 'https://YOUR_SUPABASE_URL.supabase.co';
+        const supabaseKey = 'YOUR_SUPABASE_ANON_KEY';
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+        // Function to fetch data
+        async function fetchData() {
+            try {
+                let { data, error } = await supabase
+                    .from('your_table_name')
+                    .select('*');
+                
+                if (error) {
+                    throw error;
+                }
+
+                const list = document.getElementById('data-list');
+                list.innerHTML = data.map(item => `<li>${item.your_column_name}</li>`).join('');
+                document.getElementById('status').textContent = 'Data fetched successfully.';
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                document.getElementById('status').textContent = 'Error fetching data: ' + error.message;
+            }
+        }
+
+        // Function to listen to changes
+        function listenToChanges() {
+            supabase
+                .from('your_table_name')
+                .on('INSERT', payload => {
+                    console.log('Change received!', payload);
+                    fetchData();  // Refresh data on change
+                })
+                .subscribe();
+        }
+
+        // Function to check connection
+        async function checkConnection() {
+            try {
+                const { data, error } = await supabase
+                    .from('your_table_name')
+                    .select('*')
+                    .limit(1);  // Check if we can fetch at least one record
+
+                if (error) {
+                    throw error;
+                }
+
+                document.getElementById('status').textContent = 'Connected to Supabase successfully!';
+                fetchData();  // Fetch initial data
+                listenToChanges();  // Set up real-time listener
+            } catch (error) {
+                document.getElementById('status').textContent = 'Unable to connect to Supabase: ' + error.message;
+            }
+        }
+
+        // Check connection when the page loads
+        checkConnection();
+    </script>
+</body>
+</html>
