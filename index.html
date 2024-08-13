@@ -15,6 +15,8 @@
         // Initialize Supabase
         const supabaseUrl = 'https://zisqqzpvrnzuuswrzton.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inppc3FxenB2cm56dXVzd3J6dG9uIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjM1NTg5MTUsImV4cCI6MjAzOTEzNDkxNX0.CyLFfqD84OhnAtyHjJPWp8O-sipKabDOHfwirLus_z8';
+        
+        // Ensure that Supabase is initialized before using it
         const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
         // Function to fetch and display data
@@ -47,7 +49,7 @@
             }
         }
 
-        // Check connection and fetch data when the page loads
+        // Fetch data when the page loads
         fetchData();
     </script>
 </body>
