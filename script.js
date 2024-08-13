@@ -1,9 +1,7 @@
 const cells = document.querySelectorAll('[data-cell]');
-const board = document.getElementById('game-board');
 const status = document.getElementById('status');
 const resetButton = document.getElementById('reset');
 let isXTurn = true;
-let boardState = Array(9).fill(null);
 
 const checkWinner = (player) => {
     const winningCombinations = [
@@ -18,23 +16,22 @@ const checkWinner = (player) => {
     ];
 
     return winningCombinations.some(combination => {
-        return combination.every(index => cells[index].textContent === player);
+        return combination.every(index => cells[index].classList.contains(player));
     });
 };
 
 const handleClick = (e) => {
     const cell = e.target;
 
-    if (cell.textContent || checkWinner('X') || checkWinner('O')) return;
+    if (cell.classList.contains('x') || cell.classList.contains('o') || checkWinner('x') || checkWinner('o')) return;
 
-    cell.textContent = isXTurn ? 'X' : 'O';
-    boardState[Array.from(cells).indexOf(cell)] = isXTurn ? 'X' : 'O';
+    cell.classList.add(isXTurn ? 'x' : 'o');
     
-    if (checkWinner('X')) {
+    if (checkWinner('x')) {
         status.textContent = 'Player X wins!';
-    } else if (checkWinner('O')) {
+    } else if (checkWinner('o')) {
         status.textContent = 'Player O wins!';
-    } else if (!boardState.includes(null)) {
+    } else if ([...cells].every(cell => cell.classList.contains('x') || cell.classList.contains('o'))) {
         status.textContent = 'It\'s a draw!';
     }
 
@@ -42,8 +39,7 @@ const handleClick = (e) => {
 };
 
 const resetGame = () => {
-    cells.forEach(cell => cell.textContent = '');
-    boardState = Array(9).fill(null);
+    cells.forEach(cell => cell.classList.remove('x', 'o'));
     status.textContent = '';
     isXTurn = true;
 };
