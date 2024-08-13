@@ -4,53 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Supabase Data Display Example</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script type="module" src="app.js"></script>
 </head>
 <body>
     <h1>Supabase Data Display Example</h1>
     <div id="status"></div>
     <div id="data-list"></div>
-
-    <script>
-        // Initialize Supabase
-        const supabaseUrl = 'https://zisqqzpvrnzuuswrzton.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inppc3FxenB2cm56dXVzd3J6dG9uIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjM1NTg5MTUsImV4cCI6MjAzOTEzNDkxNX0.CyLFfqD84OhnAtyHjJPWp8O-sipKabDOHfwirLus_z8';
-        
-        // Ensure that Supabase is initialized before using it
-        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-
-        // Function to fetch and display data
-        async function fetchData() {
-            try {
-                // Fetch data from the 'products' table
-                const { data, error } = await supabase
-                    .from('products')
-                    .select('*');
-
-                if (error) {
-                    throw error;
-                }
-
-                const dataList = document.getElementById('data-list');
-                if (data && data.length > 0) {
-                    dataList.innerHTML = `
-                        <h2>Products</h2>
-                        <ul>
-                            ${data.map(item => `<li>ID: ${item.id}, Name: ${item.name}, Price: $${item.price}</li>`).join('')}
-                        </ul>`;
-                } else {
-                    dataList.innerHTML = '<p>No products found.</p>';
-                }
-
-                document.getElementById('status').textContent = 'Data fetched successfully.';
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                document.getElementById('status').textContent = 'Error fetching data: ' + error.message;
-            }
-        }
-
-        // Fetch data when the page loads
-        fetchData();
-    </script>
 </body>
 </html>
