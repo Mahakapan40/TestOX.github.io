@@ -9,7 +9,7 @@
 <body>
     <h1>Supabase Real-Time Example</h1>
     <div id="status"></div>
-    <ul id="data-list"></ul>
+    <div id="tables-list"></div>
 
     <script>
         // Initialize Supabase
@@ -17,35 +17,28 @@
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inppc3FxenB2cm56dXVzd3J6dG9uIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjM1NTg5MTUsImV4cCI6MjAzOTEzNDkxNX0.CyLFfqD84OhnAtyHjJPWp8O-sipKabDOHfwirLus_z8';
         const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-        // Function to fetch data
-        async function fetchData() {
+        // Function to fetch and display tables
+        async function fetchTables() {
             try {
-                let { data, error } = await supabase
-                    .from('your_table_name')
-                    .select('*');
-                
+                // Fetch table names from the Supabase metadata
+                const { data, error } = await supabase.rpc('get_table_names'); // Ensure this function exists in your Supabase instance
+
                 if (error) {
                     throw error;
                 }
 
-                const list = document.getElementById('data-list');
-                list.innerHTML = data.map(item => `<li>${item.your_column_name}</li>`).join('');
-                document.getElementById('status').textContent = 'Data fetched successfully.';
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                document.getElementById('status').textContent = 'Error fetching data: ' + error.message;
-            }
-        }
+                const tablesList = document.getElementById('tables-list');
+                if (data && data.length > 0) {
+                    tablesList.innerHTML = `<h2>Tables</h2><ul>${data.map(table => `<li>${table}</li>`).join('')}</ul>`;
+                } else {
+                    tablesList.innerHTML = '<p>No tables found.</p>';
+                }
 
-        // Function to listen to changes
-        function listenToChanges() {
-            supabase
-                .from('your_table_name')
-                .on('INSERT', payload => {
-                    console.log('Change received!', payload);
-                    fetchData();  // Refresh data on change
-                })
-                .subscribe();
+                document.getElementById('status').textContent = 'Tables fetched successfully.';
+            } catch (error) {
+                console.error('Error fetching tables:', error);
+                document.getElementById('status').textContent = 'Error fetching tables: ' + error.message;
+            }
         }
 
         // Function to check connection
@@ -61,8 +54,7 @@
                 }
 
                 document.getElementById('status').textContent = 'Connected to Supabase successfully!';
-                fetchData();  // Fetch initial data
-                listenToChanges();  // Set up real-time listener
+                fetchTables();  // Fetch table names
             } catch (error) {
                 document.getElementById('status').textContent = 'Unable to connect to Supabase: ' + error.message;
             }
