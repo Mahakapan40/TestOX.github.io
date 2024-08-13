@@ -28,11 +28,11 @@ body {
 }
 
 .cell.x {
-    color: #007bff; /* สีของ X */
+    color: red; /* สีของ X เป็นสีแดง */
 }
 
 .cell.o {
-    color: #28a745; /* สีของ O */
+    color: blue; /* สีของ O เป็นสีน้ำเงิน */
 }
 
 #status {
